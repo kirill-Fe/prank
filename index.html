@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Сайт с автовоспроизведением звука (попытка)</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    p {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <a href="https://kirill-fe.github.io/projects/">Проекты от меня</a>
+  <p>Заказать звук бесплатно в тг</p> <a href="https://t.me/Kirill_Florik">@Kirill_Florik</a>
+
+  <audio id="myAudio" src="gromko.mp3" preload="auto"></audio>
+
+  <script>
+    window.onload = function() {
+      var audio = document.getElementById("myAudio");
+
+      // Функция для попытки воспроизведения звука
+      function tryToPlay() {
+        audio.muted = true; // Сначала приглушаем звук
+        audio.play()
+          .then(() => {
+            // Автовоспроизведение удалось!
+            audio.muted = false;  // Разрешаем звук
+            console.log("Автовоспроизведение успешно!");
+          })
+          .catch(error => {
+            // Автовоспроизведение заблокировано браузером
+            console.error("Автовоспроизведение заблокировано:", error);
+            console.log("Повторная попытка воспроизведения через 1 секунду...");
+            setTimeout(tryToPlay, 1000); // Повторная попытка через 1 секунду
+          });
+      }
+
+      // Вызываем функцию для попытки воспроизведения звука
+      tryToPlay();
+
+      // Альтернативный подход: пробуем воспроизвести звук при взаимодействии пользователя (например, клик по странице)
+      document.addEventListener('click', function() {
+        if (audio.paused) {  // Проверяем, не воспроизводится ли звук уже
+          audio.muted = false; // Раскомментируйте эту строку, если звук изначально был приглушен
+          audio.play()
+            .then(() => {
+              console.log("Звук воспроизведен после взаимодействия пользователя.");
+            })
+            .catch(error => {
+              console.error("Не удалось воспроизвести звук после взаимодействия:", error);
+            });
+        }
+      });
+    };
+  </script>
+</body>
+</html>
